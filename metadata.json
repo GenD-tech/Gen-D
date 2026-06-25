@@ -1,0 +1,6 @@
+{
+  "name": "LYNIQ",
+  "description": "Next-Gen Design Studio & Creative Product Agency",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
