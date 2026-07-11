@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Moon, Sun, Menu, X, Sparkles, ShieldCheck } from "lucide-react";
+import { Menu, X, ShieldCheck } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface HeaderProps {
@@ -61,7 +61,7 @@ export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderPr
         {/* Logo */}
         <a href="#home" onClick={(e) => handleLinkClick(e, "#home")} className="flex items-center space-x-1 group">
           <span className={`text-xl sm:text-2xl font-black tracking-tight uppercase font-syne flex items-center transition-colors duration-300 ${scrolled ? "text-zinc-950" : "text-white"}`}>
-            GEND<span className="text-xs font-bold align-super ml-0.5 opacity-80">®</span>
+            GEN-D<span className="text-xs font-bold align-super ml-0.5 opacity-80">®</span>
           </span>
         </a>
 
@@ -83,7 +83,7 @@ export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderPr
           ))}
         </nav>
 
-        {/* Actions (Menu trigger only, no theme toggler) */}
+        {/* Actions */}
         <div className="flex items-center space-x-4">
           <button
             onClick={onAdminClick}
@@ -164,7 +164,7 @@ export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderPr
                     <ShieldCheck className="w-3.5 h-3.5" />
                     Admin
                   </button>
-                  <span className="text-xs font-mono text-zinc-400">GEND STUDIO ©2026</span>
+                  <span className="text-xs font-mono text-zinc-400">GEN-D STUDIO ©2026</span>
                 </div>
               </div>
             </div>

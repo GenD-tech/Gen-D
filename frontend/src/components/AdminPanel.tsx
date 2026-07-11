@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { ArrowLeft, CheckCircle2, Loader2, LockKeyhole, LogOut, Menu, ShieldCheck, Trash2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, KeyRound, Loader2, LockKeyhole, LogOut, Mail, Menu, ShieldCheck, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { apiFetch } from "../lib/api";
 
@@ -50,6 +50,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
   const [deletingContractId, setDeletingContractId] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -169,6 +170,36 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       setErrorMessage(error instanceof Error ? error.message : "Invalid password.");
     } finally {
       setIsAuthenticating(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    const confirmed = window.confirm(
+      "Reset admin password?\n\nA brand-new password will be generated and sent to info@gendtechnologies.in immediately. Your current password will stop working.\n\nClick OK to confirm."
+    );
+    if (!confirmed) return;
+
+    setIsForgotPassword(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
+    try {
+      const response = await apiFetch("/api/admin/forgot-password", { method: "POST" });
+      const data = await response.json().catch(() => ({}));
+
+      if (response.ok && data.success) {
+        setSuccessMessage(
+          data.data?.emailSent
+            ? "✓ New password sent to info@gendtechnologies.in. Check your inbox and log in with the new password."
+            : "Password was reset but the email could not be delivered. Please check the server SMTP configuration."
+        );
+      } else {
+        setErrorMessage(data.message || "Failed to reset password. Please try again.");
+      }
+    } catch {
+      setErrorMessage("Network error. Please check your connection.");
+    } finally {
+      setIsForgotPassword(false);
     }
   };
 
@@ -369,6 +400,32 @@ return (
                   {isAuthenticating ? <Loader2 className="h-4 w-4 animate-spin" /> : <ShieldCheck className="h-4 w-4" />}
                   {isAuthenticating ? "Checking..." : "Open admin page"}
                 </button>
+
+                {/* Forgot password */}
+                <div className="text-center pt-1">
+                  <button
+                    type="button"
+                    id="admin-forgot-password-btn"
+                    onClick={() => void handleForgotPassword()}
+                    disabled={isForgotPassword}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400 hover:text-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isForgotPassword ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      <KeyRound className="h-3 w-3" />
+                    )}
+                    {isForgotPassword ? "Sending new password..." : "Forgot password? Send to email"}
+                  </button>
+                </div>
+
+                {/* Feedback for forgot-password action */}
+                {successMessage && (
+                  <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 flex items-start gap-2">
+                    <Mail className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>{successMessage}</span>
+                  </div>
+                )}
               </div>
             </motion.form>
           </div>
@@ -401,11 +458,9 @@ return (
                       value={view}
                       onChange={(event) => {
                         const nextView = event.target.value as AdminView;
-
                         if (nextView === "change-password") {
                           setCurrentPassword(adminPassword);
                         }
-
                         setView(nextView);
                       }}
                       className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-900 outline-none transition-colors focus:border-blue-500"
@@ -524,7 +579,6 @@ return (
                           <h2 className="text-lg font-bold tracking-tight text-slate-900">Stored contracts</h2>
                           <p className="text-sm text-slate-500">Delete any contract entry and it will be removed from MongoDB immediately.</p>
                         </div>
-
                         {isLoadingContracts && <Loader2 className="h-5 w-5 animate-spin text-blue-500" />}
                       </div>
 
