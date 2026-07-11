@@ -157,7 +157,7 @@ const submitLead = asyncHandler(async (req, res) => {
     message: message ? String(message).trim() : "",
     source: "commercial-website-contact-form",
   });
-
+  console.log("New lead captured:", contact);
   return res.status(201).json(
     new ApiResponse(201, contact, "Lead successfully captured! Our team will contact you within 2 hours.")
   );

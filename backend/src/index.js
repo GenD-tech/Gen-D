@@ -26,6 +26,6 @@ const start = async () => {
 };
 
 start().catch((error) => {
-  console.error("Failed to start GrowTyping backend:", error);
+  console.error("Failed to start Gen-D backend:", error);
   process.exitCode = 1;
 });

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Send, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { apiFetch } from "../lib/api";
 
 interface ContactFormProps {
   prefilledService: string;
@@ -34,7 +35,7 @@ export default function ContactForm({ prefilledService }: ContactFormProps) {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/leads", {
+      const response = await apiFetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, service, message })

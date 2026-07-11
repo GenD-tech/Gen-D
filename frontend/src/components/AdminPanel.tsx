@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { ArrowLeft, CheckCircle2, Loader2, LockKeyhole, LogOut, Menu, ShieldCheck, Trash2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { apiFetch } from "../lib/api";
 
 interface AdminPanelProps {
   onClose: () => void;
@@ -89,7 +90,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/admin/contracts", {
+      const response = await apiFetch("/api/admin/contracts", {
         headers: authHeaders(password),
       });
 
@@ -107,7 +108,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     setIsCheckingSession(true);
 
     try {
-      const response = await fetch("/api/admin/login", {
+      const response = await apiFetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
@@ -136,7 +137,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     }
   }, []);
 
-  const handleLogin = async (event: React.FormEvent) => {
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
 
     const password = loginPassword.trim();
@@ -150,7 +151,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/admin/login", {
+      const response = await apiFetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
@@ -185,7 +186,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     setErrorMessage("");
 
     try {
-      const response = await fetch(`/api/admin/contracts/${contractId}`, {
+      const response = await apiFetch(`/api/admin/contracts/${contractId}`, {
         method: "DELETE",
         headers: authHeaders(adminPassword),
       });
@@ -201,7 +202,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     }
   };
 
-  const handlePasswordUpdate = async (event: React.FormEvent) => {
+  const handlePasswordUpdate = async (event: FormEvent) => {
     event.preventDefault();
 
     if (!adminPassword) {
@@ -218,7 +219,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
     setErrorMessage("");
 
     try {
-      const response = await fetch("/api/admin/password", {
+      const response = await apiFetch("/api/admin/password", {
         method: "POST",
         headers: authHeaders(adminPassword),
         body: JSON.stringify({

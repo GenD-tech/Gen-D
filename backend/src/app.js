@@ -8,9 +8,9 @@ dotenv.config();
 
 const app = express();
 
-const originList = (process.env.FRONTEND_ORIGINS || "http://localhost:3000,http://localhost:5173,http://localhost:4173")
+const originList = (process.env.FRONTEND_ORIGINS )
   .split(",")
-  .map((origin) => origin.trim())
+  .map((origin) => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
 
 app.use(

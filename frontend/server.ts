@@ -21,8 +21,63 @@ const leads: Lead[] = [];
 async function startServer() {
   const app = express();
   const PORT = 3000;
+  const BACKEND_URL = process.env.BACKEND_URL;
 
   app.use(express.json());
+
+  const proxyApiRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    try {
+      const targetUrl = new URL(req.originalUrl, BACKEND_URL);
+      const headers = new Headers();
+
+      Object.entries(req.headers).forEach(([key, value]) => {
+        const headerValue = Array.isArray(value) ? value.join(",") : value;
+
+        if (!headerValue) {
+          return;
+        }
+
+        const normalizedKey = key.toLowerCase();
+        if (normalizedKey === "host" || normalizedKey === "content-length") {
+          return;
+        }
+
+        headers.set(key, headerValue);
+      });
+
+      let body: string | undefined;
+      if (!["GET", "HEAD"].includes(req.method)) {
+        body = req.body === undefined ? undefined : JSON.stringify(req.body);
+
+        if (body && !headers.has("content-type")) {
+          headers.set("content-type", "application/json");
+        }
+      }
+
+      const backendResponse = await fetch(targetUrl, {
+        method: req.method,
+        headers,
+        body,
+      });
+
+      res.status(backendResponse.status);
+      backendResponse.headers.forEach((value, key) => {
+        const normalizedKey = key.toLowerCase();
+        if (["transfer-encoding", "content-encoding", "connection", "keep-alive"].includes(normalizedKey)) {
+          return;
+        }
+
+        res.setHeader(key, value);
+      });
+
+      const responseText = await backendResponse.text();
+      res.send(responseText);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  app.use("/api", proxyApiRequest);
 
   // Initialize Gemini client lazily to avoid crashing if API key is missing
   let ai: GoogleGenAI | null = null;
@@ -125,38 +180,6 @@ If asked about other things, politely steer them back to how GEND can elevate th
         note: "Configuring the GEMINI_API_KEY secret will unlock full-powered AI generation."
       });
     }
-  });
-
-  // 2. API: Save Lead Submission
-  app.post("/api/leads", (req, res) => {
-    const { name, email, service, message } = req.body;
-
-    if (!name || !email) {
-      return res.status(400).json({ error: "Name and email are required." });
-    }
-
-    const newLead: Lead = {
-      id: `lead_${Math.random().toString(36).substr(2, 9)}`,
-      name,
-      email,
-      service: service || "General Inquiry",
-      message: message || "",
-      timestamp: new Date().toISOString()
-    };
-
-    leads.push(newLead);
-    console.log("New Lead Captured:", newLead);
-
-    return res.json({ 
-      success: true, 
-      message: "Lead successfully captured! Our lead strategist will contact you within 2 hours.",
-      lead: newLead
-    });
-  });
-
-  // Get captured leads (for debugging or admin view if needed)
-  app.get("/api/leads", (req, res) => {
-    res.json({ count: leads.length, leads });
   });
 
   // Vite integration middleware for dev environment, static routing for prod
