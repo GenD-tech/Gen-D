@@ -40,7 +40,7 @@
 
 ##  About the Project
 
-**Gen-D** is a premium, full-stack digital agency website built for **GEND** — a next-generation design studio that bridges traditional branding with modern digital strategy, targeting Gen-Z, Millennial, and high-growth markets.
+**Gen-D** is a premium, full-stack digital agency website built for **GEN-D** — a next-generation design studio that bridges traditional branding with modern digital strategy, targeting Gen-Z, Millennial, and high-growth markets.
 
 The site is more than a portfolio — it is a **complete business platform** with real-time lead capture, an AI-powered chatbot, and a password-protected admin dashboard for managing enquiries.
 
@@ -51,7 +51,7 @@ The site is more than a portfolio — it is a **complete business platform** wit
 | Feature | Description |
 |---|---|
 |  **Premium UI/UX** | Dark-mode first design with glassmorphism, micro-animations (Framer Motion), and a curated color palette |
-|  **AI Chatbot** | Floating chatbot powered by Google Gemini API — acts as a digital strategist for GEND |
+|  **AI Chatbot** | Floating chatbot powered by Google Gemini API — acts as a digital strategist for GEN-D |
 |  **Lead Capture Form** | Contact form that saves leads directly to MongoDB Atlas |
 |  **Admin Dashboard** | Password-protected panel to view, manage, and delete all submitted leads |
 |  **Fully Responsive** | Mobile-first layout — works on all screen sizes |
@@ -484,14 +484,14 @@ Contributions are welcome! Please follow these steps:
 
 ##  License
 
-This project is proprietary and maintained by **GEND Technologies**.  
-All rights reserved © 2025 GEND.
+This project is proprietary and maintained by **GEN-D Technologies**.  
+All rights reserved © 2025 GEN-D.
 
 ---
 
 <div align="center">
 
-**Built with ❤️ by the GEND team**
+**Built with ❤️ by the GEN-D team**
 
 [![Website](https://img.shields.io/badge/website-gendtechnologies.in-ff4a22?style=flat-square)](https://gendtechnologies.in)
 [![GitHub](https://img.shields.io/badge/github-GenD--tech-181717?style=flat-square&logo=github)](https://github.com/GenD-tech)
