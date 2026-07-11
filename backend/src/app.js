@@ -8,20 +8,45 @@ dotenv.config();
 
 const app = express();
 
-const originList = (process.env.FRONTEND_ORIGINS )
+// Build the allowed-origin list from the env var.
+// Strip trailing slashes so "https://gen-d.onrender.com/" and
+// "https://gen-d.onrender.com" are treated the same.
+const rawOrigins = process.env.FRONTEND_ORIGINS || "";
+const originList = rawOrigins
   .split(",")
-  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .map((o) => o.trim().replace(/\/$/, ""))
   .filter(Boolean);
 
-app.use(
-  cors({
-    origin: originList,
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
-app.options("*", cors());
+// Always allow the known Render static-site URL and the custom domain
+// as a safety net, even if the env var was not updated.
+const ALWAYS_ALLOW = [
+  "https://gen-d.onrender.com",
+  "https://gendtechnologies.in",
+  "https://www.gendtechnologies.in",
+];
+
+ALWAYS_ALLOW.forEach((origin) => {
+  if (!originList.includes(origin)) {
+    originList.push(origin);
+  }
+});
+
+const corsOptions = {
+  origin: (incomingOrigin, callback) => {
+    // Allow server-to-server requests (no Origin header)
+    if (!incomingOrigin) return callback(null, true);
+    if (originList.includes(incomingOrigin)) return callback(null, true);
+    callback(new Error(`CORS: origin '${incomingOrigin}' is not allowed`));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// Apply CORS middleware — this handles both regular requests AND preflight (OPTIONS)
+app.use(cors(corsOptions));
+// Explicitly handle OPTIONS pre-flight for all routes using the same config
+app.options("*", cors(corsOptions));
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));

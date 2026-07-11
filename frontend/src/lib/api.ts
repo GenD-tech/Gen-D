@@ -1,16 +1,43 @@
 /**
  * api.ts — central fetch helper for Gen-D frontend.
  *
- * Local dev  : VITE_API_BASE_URL is "" (empty), so paths like "/api/leads"
- *              are relative and hit the server.ts proxy which forwards to the
- *              Node backend.
- *
- * Production : VITE_API_BASE_URL is set to the Render backend URL
- *              (e.g. "https://gend.onrender.com"), so all API calls go
- *              directly to the backend from the browser.
+ * Priority order for the backend base URL:
+ *  1. VITE_API_BASE_URL  — set as an environment variable on Render before build
+ *  2. VITE_BACKEND_URL   — alternative env name (fallback)
+ *  3. Auto-detected from window.location: if the page is served from
+ *     gen-d.onrender.com (the static frontend), we know the backend is at
+ *     gend.onrender.com (the web service), so we hard-wire it.
+ *  4. Empty string       — local dev; relative paths hit the server.ts proxy.
  */
 
-const BASE = (import.meta.env.VITE_API_BASE_URL ?? "").replace(/\/$/, "");
+const getBase = (): string => {
+  // 1 & 2: Env vars baked in at build time by Vite
+  const fromEnv =
+    (import.meta.env.VITE_API_BASE_URL ?? "") ||
+    (import.meta.env.VITE_BACKEND_URL ?? "");
+
+  if (fromEnv) return fromEnv.replace(/\/$/, "");
+
+  // 3: Runtime auto-detect for Render deployment
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    // Frontend static site  → gen-d.onrender.com
+    // Backend web service   → gend.onrender.com
+    if (host === "gen-d.onrender.com") {
+      return "https://gend.onrender.com";
+    }
+    // Handle custom domains: if the site is served from gendtechnologies.in
+    // the backend lives at the same Render web service URL.
+    if (host === "gendtechnologies.in" || host === "www.gendtechnologies.in") {
+      return "https://gend.onrender.com";
+    }
+  }
+
+  // 4: Local dev — use empty string so relative paths hit the proxy
+  return "";
+};
+
+const BASE = getBase();
 
 /**
  * Thin wrapper around fetch that prefixes the backend URL when needed.
