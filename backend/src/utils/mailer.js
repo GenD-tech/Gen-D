@@ -1,24 +1,38 @@
-import nodemailer from "nodemailer";
+const RESEND_API_URL = "https://api.resend.com/emails";
 
-const createTransporter = () => {
-  const host = process.env.SMTP_HOST;
-  const port = parseInt(process.env.SMTP_PORT || "587", 10);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+/**
+ * Sends an email using the Resend HTTP API.
+ * @param {{ from: string, to: string|string[], subject: string, html: string, text: string, replyTo?: string }} options
+ */
+const sendEmail = async ({ from, to, subject, html, text, replyTo }) => {
+  const apiKey = process.env.RESEND_API_KEY;
 
-  if (!host || !user || !pass) {
-    throw new Error(
-      "SMTP configuration is incomplete. Please set SMTP_HOST, SMTP_PORT, SMTP_USER, and SMTP_PASS in your .env file."
-    );
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is not configured. Please set it in your environment variables.");
   }
 
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465, 
-    auth: { user, pass },
+  const body = { from, to: Array.isArray(to) ? to : [to], subject, html, text };
+  if (replyTo) body.reply_to = replyTo;
+
+  const response = await fetch(RESEND_API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
   });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Resend API error (${response.status}): ${errorBody}`);
+  }
+
+  return response.json();
 };
+
+const getFrom = () => process.env.MAIL_FROM || "Gen-D Technologies <info@gendtechnologies.in>";
+
 
 /**
  * Sends a branded OTP email to the specified address.
@@ -26,9 +40,6 @@ const createTransporter = () => {
  * @param {string} otp     - 6-digit OTP string
  */
 export const sendOtpEmail = async (toEmail, otp) => {
-  const from = process.env.MAIL_FROM || "Gen-D Technologies <info@gendtechnologies.in>";
-  const transporter = createTransporter();
-
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -77,8 +88,8 @@ export const sendOtpEmail = async (toEmail, otp) => {
 </body>
 </html>`;
 
-  await transporter.sendMail({
-    from,
+  await sendEmail({
+    from: getFrom(),
     to: toEmail,
     subject: "Your Gen-D Verification Code",
     html,
@@ -86,14 +97,13 @@ export const sendOtpEmail = async (toEmail, otp) => {
   });
 };
 
+
+
 /**
  * Sends a confirmation email to the user after their form submission.
  * @param {{ name: string, email: string, service: string, message: string }} lead
  */
 export const sendConfirmationEmail = async ({ name, email, service, message }) => {
-  const from = process.env.MAIL_FROM || "Gen-D Technologies <info@gendtechnologies.in>";
-  const transporter = createTransporter();
-
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -171,23 +181,22 @@ export const sendConfirmationEmail = async ({ name, email, service, message }) =
 </body>
 </html>`;
 
-  await transporter.sendMail({
-    from,
+  await sendEmail({
+    from: getFrom(),
     to: email,
     subject: `We received your request, ${name} — Gen-D Technologies`,
     html,
-    text: `Hi ${name},\n\nThank you for reaching out to Gen-D Technologies! We have received your request and will get back to you within 24 hours.\n\nYour submission:\n- Service: ${service}\n- Message: ${message || "N/A"}\n\nFor urgent queries: info@gendtechnologies.in | 991-095-2431\n\n— Gen-D Technologies Team`,
+    text: `Hi ${name},\n\nThank you for reaching out to Gen-D Technologies! We have received your request and will get back to you within 2 hours.\n\nYour submission:\n- Service: ${service}\n- Message: ${message || "N/A"}\n\nFor urgent queries: info@gendtechnologies.in | 991-095-2431\n\n— Gen-D Technologies Team`,
   });
 };
+
 
 /**
  * Sends a new lead notification to the GEN-D internal email.
  * @param {{ name: string, email: string, service: string, message: string }} lead
  */
 export const sendNewLeadNotification = async ({ name, email, service, message }) => {
-  const from = process.env.MAIL_FROM || "Gen-D Technologies <info@gendtechnologies.in>";
   const NOTIFY_EMAIL = "info@gendtechnologies.in";
-  const transporter = createTransporter();
 
   const submittedAt = new Date().toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
@@ -272,12 +281,77 @@ export const sendNewLeadNotification = async ({ name, email, service, message })
 </body>
 </html>`;
 
-  await transporter.sendMail({
-    from,
+  await sendEmail({
+    from: getFrom(),
     to: NOTIFY_EMAIL,
     replyTo: email,
     subject: `New Lead: ${name} is interested in ${service}`,
     html,
     text: `NEW LEAD ALERT\n\nName: ${name}\nEmail: ${email}\nService: ${service}\nMessage: ${message || "N/A"}\nSubmitted: ${submittedAt} IST\n\nReply to: ${email}`,
+  });
+};
+
+
+
+/**
+ * Sends a password reset email to the admin recovery address.
+ * @param {string} toEmail    - Recovery email address
+ * @param {string} newPassword - The newly generated password
+ */
+export const sendPasswordResetEmail = async (toEmail, newPassword) => {
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Password Reset – Gen-D Admin</title>
+</head>
+<body style="margin:0;padding:0;background:#0d0d0d;font-family:'Segoe UI',Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0d0d;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="520" cellpadding="0" cellspacing="0" style="background:#121212;border:1px solid #222;border-radius:16px;overflow:hidden;max-width:520px;">
+          <tr>
+            <td style="background:#ff4a22;padding:28px 36px;">
+              <p style="margin:0;color:#fff;font-size:11px;font-weight:900;letter-spacing:4px;text-transform:uppercase;">↳ GEN-D TECHNOLOGIES</p>
+              <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;">Password Reset</h1>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:36px 36px 28px;">
+              <p style="color:#a1a1aa;font-size:14px;line-height:1.6;margin:0 0 24px;">
+                A password reset was requested for the Gen-D admin panel. Your new temporary password is below. Log in and change it immediately.
+              </p>
+              <div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
+                <p style="margin:0 0 8px;color:#71717a;font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;">New Admin Password</p>
+                <p style="margin:0;color:#60a5fa;font-size:28px;font-weight:900;letter-spacing:4px;font-family:'Courier New',monospace;">${newPassword}</p>
+              </div>
+              <p style="color:#71717a;font-size:12px;line-height:1.6;margin:0 0 12px;">
+                ⚠️ For security, please change this password immediately after logging in.
+              </p>
+              <p style="color:#52525b;font-size:11px;line-height:1.5;margin:0;">
+                If you did not request this reset, your account may be at risk. Change the password immediately.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 36px;border-top:1px solid #1f1f1f;">
+              <p style="margin:0;color:#3f3f46;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Gen-D Technologies · info@gendtechnologies.in</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+
+  await sendEmail({
+    from: getFrom(),
+    to: toEmail,
+    subject: "Gen-D Admin Panel — New Password",
+    html,
+    text: `Your new Gen-D admin panel password is: ${newPassword}\n\nPlease log in and change it immediately.`,
   });
 };

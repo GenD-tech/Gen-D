@@ -191,7 +191,7 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
         setSuccessMessage(
           data.data?.emailSent
             ? "✓ New password sent to info@gendtechnologies.in. Check your inbox and log in with the new password."
-            : "Password was reset but the email could not be delivered. Please check the server SMTP configuration."
+            : "Password was reset but the email could not be delivered. Please check the RESEND_API_KEY and domain verification in Resend."
         );
       } else {
         setErrorMessage(data.message || "Failed to reset password. Please try again.");

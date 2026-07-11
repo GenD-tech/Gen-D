@@ -7,7 +7,7 @@ import { OtpStore } from "../models/otpStore.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { sendOtpEmail, sendConfirmationEmail, sendNewLeadNotification } from "../utils/mailer.js";
+import { sendOtpEmail, sendConfirmationEmail, sendNewLeadNotification, sendPasswordResetEmail } from "../utils/mailer.js";
 
 let aiClient = null;
 
@@ -378,77 +378,15 @@ const forgotAdminPassword = asyncHandler(async (_req, res) => {
     { new: true, upsert: true, setDefaultsOnInsert: true }
   );
 
-  const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Password Reset – Gen-D Technologies</title>
-</head>
-<body style="margin:0;padding:0;background:#0d0d0d;font-family:'Segoe UI',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0d0d0d;padding:40px 20px;">
-    <tr>
-      <td align="center">
-        <table width="520" cellpadding="0" cellspacing="0" style="background:#121212;border:1px solid #222;border-radius:16px;overflow:hidden;max-width:520px;">
-          <tr>
-            <td style="background:#2563eb;padding:28px 36px;">
-              <p style="margin:0;color:#fff;font-size:11px;font-weight:900;letter-spacing:4px;text-transform:uppercase;">↳ GEN-D TECHNOLOGIES</p>
-              <h1 style="margin:8px 0 0;color:#fff;font-size:22px;font-weight:900;letter-spacing:-0.5px;text-transform:uppercase;">Admin Password Reset</h1>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:36px 36px 28px;">
-              <p style="color:#a1a1aa;font-size:14px;line-height:1.6;margin:0 0 24px;">
-                A password reset was requested for the Gen-D admin panel. Your new temporary password is below. Log in and change it immediately.
-              </p>
-              <div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:24px;text-align:center;margin:0 0 24px;">
-                <p style="margin:0 0 8px;color:#71717a;font-size:10px;font-weight:900;letter-spacing:4px;text-transform:uppercase;">New Admin Password</p>
-                <p style="margin:0;color:#60a5fa;font-size:28px;font-weight:900;letter-spacing:4px;font-family:'Courier New',monospace;">${newPassword}</p>
-              </div>
-              <p style="color:#71717a;font-size:12px;line-height:1.6;margin:0 0 12px;">
-                ⚠️ For security, please change this password immediately after logging in.
-              </p>
-              <p style="color:#52525b;font-size:11px;line-height:1.5;margin:0;">
-                If you did not request this reset, your account may be at risk. Change the password immediately.
-              </p>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:20px 36px;border-top:1px solid #1f1f1f;">
-              <p style="margin:0;color:#3f3f46;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;">Gen-D Technologies · info@gendtechnologies.in</p>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>`;
-
   try {
-    const from = process.env.MAIL_FROM || "Gen-D Technologies <info@gendtechnologies.in>";
-    const nodemailer = await import("nodemailer");
-    const transporter = nodemailer.default.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || "587", 10),
-      secure: parseInt(process.env.SMTP_PORT || "587", 10) === 465,
-      auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-    });
-    await transporter.sendMail({
-      from,
-      to: ADMIN_RECOVERY_EMAIL,
-      subject: "Gen-D Admin Panel — New Password",
-      html,
-      text: `Your new Gen-D admin panel password is: ${newPassword}\n\nPlease log in and change it immediately.`,
-    });
+    await sendPasswordResetEmail(ADMIN_RECOVERY_EMAIL, newPassword);
   } catch (mailError) {
     console.error("[mailer] Failed to send password reset email:", mailError.message);
     return res.status(200).json(
       new ApiResponse(
         200,
         { emailSent: false },
-        "Password reset but email delivery failed. Check server logs for the SMTP error."
+        "Password reset but email delivery failed. Check server logs."
       )
     );
   }
