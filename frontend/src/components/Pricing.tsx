@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 interface PricingProps {
   onSelectPlan: (planName: string) => void;
@@ -10,43 +10,46 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
 
   const plans = [
     {
-      name: "Basic Plan",
-      price: 999,
-      description: "Establish a robust, consistent brand presence with tailored social media content schedules.",
+      name: "Starter Plan",
+      price: 14999,
+      description: "Establish a strong, consistent brand presence with tailored social media content and foundational digital marketing.",
       features: [
         "Competitor analysis",
         "Keyword research",
-        "Weekly reports",
-        "5 custom social posts / month"
+        "Weekly performance reports",
+        "5 custom social posts / month",
+        "Basic SEO setup"
       ],
       popular: false,
-      tag: "Basic"
+      tag: "Starter"
     },
     {
-      name: "Professional Plan",
-      price: 2499,
-      originalPrice: 2999,
-      description: "Scale attention through rich video assets, SEO-optimized landing pages, and performance ads.",
+      name: "Growth Plan",
+      price: 29999,
+      originalPrice: 34999,
+      description: "Scale your brand through rich video content, SEO-optimised pages, and targeted performance ad campaigns.",
       features: [
-        "Everything in Basic",
+        "Everything in Starter",
         "15 custom posts / month",
-        "Paid search campaigns",
+        "Google & Meta paid campaigns",
         "A/B creative testing",
-        "Monthly strategy alignment call"
+        "Monthly strategy call",
+        "Instagram Reels / Short Videos"
       ],
       popular: true,
-      tag: "Most popular"
+      tag: "Most Popular"
     },
     {
       name: "Premium Plan",
-      price: 4999,
-      description: "Complete omnichannel takeover, custom web engineering, and physical brand activations.",
+      price: 59999,
+      description: "Complete omnichannel digital takeover — custom web development, full content production, events, and beyond.",
       features: [
-        "Everything in Professional",
+        "Everything in Growth",
         "Dedicated creative manager",
-        "Custom web development support",
-        "Experiential activations support",
-        "Unlimited custom posts"
+        "Custom website development",
+        "Event management support",
+        "Unlimited custom posts",
+        "Professional photography shoots"
       ],
       popular: false,
       tag: "Premium"
@@ -72,10 +75,14 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
 
   const calculatePrice = (basePrice: number) => {
     if (isAnnual) {
-      // Apply 20% discount
+      // Apply 20% discount for annual
       return Math.round(basePrice * 0.8);
     }
     return basePrice;
+  };
+
+  const formatINR = (amount: number) => {
+    return amount.toLocaleString("en-IN");
   };
 
   return (
@@ -91,10 +98,10 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
             Flexible pricing
           </h2>
           <p className="text-zinc-500 text-sm sm:text-base leading-relaxed max-w-lg mx-auto font-medium">
-            Choose the plan that best fits your needs. From a solid foundation to a fully optimized solution. No lock-in contracts.
+            Choose the plan that fits your business goals. All prices in Indian Rupees (₹). No lock-in contracts — scale up or down anytime.
           </p>
 
-          {/* Monthly / Yearly Custom Selector */}
+          {/* Monthly / Yearly Selector */}
           <div className="pt-6 flex justify-center">
             <div className="bg-zinc-100 p-1.5 rounded-full inline-flex items-center space-x-1 border border-zinc-200 shadow-sm">
               <button
@@ -116,7 +123,7 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
                 }`}
               >
                 <span>Yearly</span>
-                <span className="text-[8px] bg-white/20 px-1.5 py-0.5 rounded-full text-white font-mono">
+                <span className={`text-[8px] px-1.5 py-0.5 rounded-full font-mono ${isAnnual ? "bg-white/20 text-white" : "bg-zinc-200 text-zinc-500"}`}>
                   -20%
                 </span>
               </button>
@@ -149,7 +156,7 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
                     </span>
                     {plan.originalPrice && !isAnnual && (
                       <span className={`text-xs font-mono line-through ${plan.popular ? "text-white/60" : "text-zinc-400"}`}>
-                        ${plan.originalPrice}
+                        ₹{formatINR(plan.originalPrice)}
                       </span>
                     )}
                   </div>
@@ -166,8 +173,9 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
 
                   {/* Pricing Display */}
                   <div className="mb-8 flex items-baseline">
+                    <span className="text-sm font-black mr-1 opacity-80">₹</span>
                     <span className="text-4xl sm:text-5xl font-black tracking-tighter">
-                      ${finalPrice.toLocaleString()}
+                      {formatINR(finalPrice)}
                     </span>
                     <span className={`text-[10px] font-black uppercase tracking-widest ml-2 ${
                       plan.popular ? "text-white/70" : "text-zinc-400"
@@ -178,7 +186,7 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
 
                   <hr className={`my-6 ${plan.popular ? "border-white/15" : "border-zinc-200/80"}`} />
 
-                  {/* Feature lists using ↳ arrows */}
+                  {/* Feature lists */}
                   <div className="space-y-4">
                     <span className={`text-[10px] font-black uppercase tracking-widest ${
                       plan.popular ? "text-white/70" : "text-zinc-400"
@@ -198,24 +206,32 @@ export default function Pricing({ onSelectPlan }: PricingProps) {
                   </div>
                 </div>
 
-                {/* Call to Action button */}
+                {/* Call to Action */}
                 <div className="pt-8 mt-8 border-t border-transparent">
                   <button
                     onClick={() => handleSelectPlan(plan.name)}
                     className={`w-full py-4 rounded-xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center space-x-2 border shadow-sm ${
                       plan.popular
                         ? "bg-white text-zinc-950 border-transparent hover:bg-zinc-100"
-                        : "bg-zinc-950 text-white border-transparent hover:bg-zinc-850"
+                        : "bg-zinc-950 text-white border-transparent hover:bg-zinc-800"
                     }`}
                   >
-                    <span>Choose this plan</span>
+                    <span>Get started</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </button>
+                  <p className={`text-center text-[9px] font-bold uppercase tracking-widest mt-3 ${plan.popular ? "text-white/50" : "text-zinc-400"}`}>
+                    No long-term contracts
+                  </p>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {/* Bottom Note */}
+        <p className="text-center text-xs text-zinc-400 font-medium mt-12">
+          All prices are exclusive of GST. Custom packages available — <a href="#contact" className="text-[#ff4a22] hover:underline font-bold" onClick={(e) => { e.preventDefault(); document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" }); }}>contact us</a> for a tailored quote.
+        </p>
 
       </div>
     </section>

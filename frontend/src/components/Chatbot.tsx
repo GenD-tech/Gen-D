@@ -1,8 +1,72 @@
-import { useState, useRef, useEffect } from "react";
-import { MessageSquare, X, Send, Sparkles, Loader2 } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { MessageSquare, X, Send, Bot, User, Sparkles, AlertCircle, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChatMessage } from "../types";
 import { apiFetch } from "../lib/api";
+
+/** Renders a simple subset of markdown: **bold**, - bullets, 1. numbered, \n breaks */
+function renderMarkdown(text: string) {
+  const lines = text.split("\n");
+  const elements: React.ReactNode[] = [];
+  let keyCounter = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Empty line → spacer
+    if (line.trim() === "") {
+      elements.push(<div key={keyCounter++} className="h-1" />);
+      continue;
+    }
+
+    // Numbered list item: "1. text" or "2. text"
+    const numberedMatch = line.match(/^(\d+)\.\s+(.*)/);
+    if (numberedMatch) {
+      elements.push(
+        <div key={keyCounter++} className="flex items-start space-x-2 my-0.5">
+          <span className="text-[#ff4a22] font-black text-xs shrink-0 mt-0.5">{numberedMatch[1]}.</span>
+          <span className="text-xs leading-relaxed">{renderInline(numberedMatch[2])}</span>
+        </div>
+      );
+      continue;
+    }
+
+    // Bullet list item: "- text"
+    const bulletMatch = line.match(/^[-*]\s+(.*)/);
+    if (bulletMatch) {
+      elements.push(
+        <div key={keyCounter++} className="flex items-start space-x-2 my-0.5">
+          <span className="text-[#ff4a22] font-black text-xs shrink-0 mt-1">›</span>
+          <span className="text-xs leading-relaxed">{renderInline(bulletMatch[1])}</span>
+        </div>
+      );
+      continue;
+    }
+
+    // Regular paragraph
+    elements.push(
+      <p key={keyCounter++} className="text-xs leading-relaxed">
+        {renderInline(line)}
+      </p>
+    );
+  }
+
+  return <div className="space-y-1">{elements}</div>;
+}
+
+/** Renders inline **bold** and *italic* within a string */
+function renderInline(text: string): React.ReactNode[] {
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*)/);
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i} className="font-black text-zinc-900">{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    }
+    return part;
+  });
+}
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +74,7 @@ export default function Chatbot() {
     {
       id: "welcome",
       sender: "bot",
-      text: "Hey! I'm your GEND AI Strategist. ⚡\n\nI can consult you on custom pricing, our web development capabilities, performance ads, or brand kits. What digital goals are you pursuing today?",
+      text: "Namaste! 👋 I'm the Gen-D & Co. AI assistant.\n\nI can help you with information about our services, pricing, timelines, and how we can help your business grow digitally. What are you looking to achieve today?",
       timestamp: new Date()
     }
   ]);
@@ -79,7 +143,7 @@ export default function Chatbot() {
         {
           id: `err_${Math.random().toString(36).substr(2, 9)}`,
           sender: "bot",
-          text: "My apologies, my connection was interrupted briefly. I am fully available via the main Contact form on this page — please submit your goals there and our human creative director will reach out immediately!",
+          text: "My apologies, I'm having a brief connection issue. You can reach us directly at info@gendtechnologies.in or call +91 99109 52431. Alternatively, fill out the contact form on this page!",
           timestamp: new Date()
         }
       ]);
@@ -87,10 +151,10 @@ export default function Chatbot() {
   };
 
   const suggestionChips = [
-    "Tell me about your pricing",
     "What services do you offer?",
-    "Do you do Web Development?",
-    "How fast can we launch?"
+    "Tell me about your pricing",
+    "How fast can you build a website?",
+    "Do you work with small businesses?"
   ];
 
   return (
@@ -138,7 +202,7 @@ export default function Chatbot() {
                 </div>
                 <div>
                   <h4 className="text-sm font-black uppercase tracking-tight text-white flex items-center space-x-1.5">
-                    <span>AI Strategist</span>
+                    <span>Gen-D AI Assistant</span>
                   </h4>
                   <div className="flex items-center space-x-1.5 mt-0.5">
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -170,9 +234,9 @@ export default function Chatbot() {
                       m.sender === "user"
                         ? "bg-zinc-950 text-white font-semibold rounded-tr-none"
                         : "bg-white text-zinc-800 rounded-tl-none border border-zinc-200"
-                    } whitespace-pre-line`}
+                    }`}
                   >
-                    {m.text}
+                    {m.sender === "bot" ? renderMarkdown(m.text) : m.text}
                     
                     {/* Timestamp / Status */}
                     <div className={`text-[9px] font-black uppercase tracking-wider mt-1.5 block text-right ${

@@ -9,54 +9,33 @@ export default function FAQ() {
   const faqs: FAQItem[] = [
     {
       id: "faq-1",
-      question: "What is your typical turnaround time for a custom project?",
-      answer: "For standard high-converting landing pages and marketing hubs, we typically design, build, and deploy in 3 to 4 weeks. For more complex platforms, we usually require 6 to 8 weeks which includes rigorous testing and search engine optimization.",
+      question: "What is the typical turnaround time for a website project?",
+      answer: "For a standard business website or landing page, we typically design, build, and deliver in 3 to 4 weeks. For more complex platforms with custom features or e-commerce integrations, we usually require 6 to 8 weeks. We'll give you a clear timeline after an initial consultation.",
       category: "Services"
     },
     {
       id: "faq-2",
-      question: "How do you manage and report paid digital advertising campaigns?",
-      answer: "We set up live real-time reporting dashboards so you don't have to wait for monthly PDFs. We manage your direct pixel setups, build segmented A/B testing creative loops, and adjust bids twice daily based on peak attention times.",
+      question: "How do your social media management plans work?",
+      answer: "We start with an in-depth brand and competitor audit, then build a monthly content calendar tailored to your business goals. Our team handles everything — content creation, scheduling, community management, and monthly performance reporting. You stay informed without having to manage the day-to-day.",
       category: "Marketing"
     },
     {
       id: "faq-3",
-      question: "Can we transition between different pricing packages as we grow?",
-      answer: "Absolutely! Our services operate on month-to-month retainers. You can scale your tier up or downsize at any time with a simple 30-day notice. There are no locking long-term contracts.",
+      question: "Can we upgrade or change our pricing plan as we grow?",
+      answer: "Absolutely. All our plans are month-to-month with no long-term lock-in contracts. You can scale up or downgrade at any time with a 30-day notice. We want to grow with your business, not hold you back.",
       category: "Account"
     },
     {
       id: "faq-4",
-      question: "What makes GEND different from a standard branding or marketing agency?",
-      answer: "Most traditional agencies specialize in either static designs or dry media buying. GEND operates as a developer-creator hybrid. We write sub-second fast web code, custom engineer modern lead funnels, and design visuals that actually resonate with modern audiences. We bridge aesthetic and technology.",
+      question: "Do your prices include GST?",
+      answer: "All prices listed on our website are exclusive of GST (18%). The applicable GST will be added to your invoice. We provide proper GST invoices for all services, making it fully compliant for your business expense claims.",
+      category: "Billing"
+    },
+    {
+      id: "faq-5",
+      question: "What makes Gen-D & Co. different from other digital agencies?",
+      answer: "Most agencies are generalists or are stuck in outdated approaches. Gen-D & Co. is built by the digital generation — we grew up online, we understand how platforms work, what audiences respond to, and how to create content that actually performs. We combine creative thinking with data-driven execution and a genuine passion for growing Indian businesses digitally.",
       category: "Philosophy"
-    }
-  ];
-
-  const blogPosts = [
-    {
-      title: "Designing for conversion: A deep dive into user behavior",
-      excerpt: "How minor changes in typography tracking and button placement can increase form conversions by up to 45%.",
-      date: "JUN 2026",
-      category: "DESIGN",
-      readTime: "5 MIN READ",
-      imageUrl: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=600"
-    },
-    {
-      title: "The psychology of luxury digital consumer branding",
-      excerpt: "Why minimal grids, high-contrast layouts, and generous negative space command higher premium positioning.",
-      date: "MAY 2026",
-      category: "BRANDING",
-      readTime: "7 MIN READ",
-      imageUrl: "https://images.unsplash.com/photo-1511556532299-8f662fc26c06?auto=format&fit=crop&q=80&w=600"
-    },
-    {
-      title: "Maximizing paid media ROI using custom interactive landing pages",
-      excerpt: "Why routing cold paid traffic to interactive application funnels beats standard SaaS homepages every single time.",
-      date: "APR 2026",
-      category: "MARKETING",
-      readTime: "4 MIN READ",
-      imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=600"
     }
   ];
 
@@ -86,7 +65,7 @@ export default function FAQ() {
   };
 
   return (
-    <div id="blog" className="bg-white border-b border-zinc-150">
+    <div className="bg-white border-b border-zinc-150">
       
       {/* FAQ Section */}
       <section id="faq" className="py-24 max-w-7xl mx-auto px-6">
@@ -98,15 +77,18 @@ export default function FAQ() {
               ↳ FAQ
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-950 tracking-tighter uppercase font-syne leading-tight">
-              We've heard it all.<br />Here's everything you need to know before working with us
+              Got questions?<br />We've got answers.
             </h2>
+            <p className="text-zinc-500 text-sm font-medium leading-relaxed">
+              Everything you need to know before working with us. Can't find what you're looking for?
+            </p>
             <div className="pt-4">
               <a
                 href="#contact"
                 onClick={handleAskQuestionClick}
                 className="inline-flex items-center space-x-2 text-xs font-black uppercase tracking-widest text-[#ff4a22] hover:text-[#e03d16] transition-colors"
               >
-                <span>↳ Ask a question</span>
+                <span>↳ Ask us directly</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -159,83 +141,6 @@ export default function FAQ() {
           </div>
 
         </div>
-      </section>
-
-      {/* Latest Insights Section exactly like Reference Image 11 */}
-      <section className="py-24 max-w-7xl mx-auto px-6 border-t border-zinc-150">
-        
-        {/* Insights Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-16 pb-6 border-b border-zinc-150">
-          <div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 block mb-2">
-              ↳ LATEST INSIGHTS
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-zinc-950 tracking-tighter uppercase font-syne">
-              Knowledge & Strategy
-            </h2>
-          </div>
-          <div>
-            <a
-              href="#contact"
-              onClick={handleAskQuestionClick}
-              className="inline-flex items-center space-x-1 text-xs font-black uppercase tracking-widest text-zinc-900 hover:text-[#ff4a22] transition-colors"
-            >
-              <span>↳ Read our publications</span>
-              <span className="text-[10px] text-zinc-400 ml-1">(42)</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Insights Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-          {blogPosts.map((post, idx) => (
-            <div
-              key={idx}
-              className="group flex flex-col justify-between p-6 rounded-2xl border border-zinc-200 bg-white hover:border-zinc-350 transition-all duration-300 h-full shadow-sm"
-            >
-              <div className="space-y-4">
-                {/* Image */}
-                <div className="aspect-[16/10] w-full rounded-xl overflow-hidden border border-zinc-200/50 bg-zinc-50 relative">
-                  <img
-                    src={post.imageUrl}
-                    alt={post.title}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 bg-zinc-950 text-white font-mono text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md">
-                    {post.category}
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="flex items-center justify-between text-[10px] font-black tracking-widest text-zinc-400 uppercase">
-                  <span>{post.date}</span>
-                  <span>•</span>
-                  <span>{post.readTime}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg font-black text-zinc-950 group-hover:text-[#ff4a22] transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
-
-                {/* Excerpt */}
-                <p className="text-xs text-zinc-500 font-medium leading-relaxed line-clamp-3">
-                  {post.excerpt}
-                </p>
-              </div>
-
-              {/* Read button link */}
-              <div className="pt-6 mt-6 border-t border-zinc-100 flex items-center justify-between text-zinc-900 group-hover:text-[#ff4a22] transition-colors">
-                <span className="text-[10px] font-black uppercase tracking-widest">
-                  Read Article ↳
-                </span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </div>
-            </div>
-          ))}
-        </div>
-
       </section>
 
     </div>

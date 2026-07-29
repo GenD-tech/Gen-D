@@ -5,10 +5,9 @@ import { motion, AnimatePresence } from "motion/react";
 interface HeaderProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
-  onAdminClick: () => void;
 }
 
-export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderProps) {
+export default function Header({ darkMode, setDarkMode }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -85,18 +84,6 @@ export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderPr
 
         {/* Actions */}
         <div className="flex items-center space-x-4">
-          <button
-            onClick={onAdminClick}
-            className={`hidden sm:inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-[10px] font-black uppercase tracking-widest transition-all duration-200 cursor-pointer shadow-sm ${
-              scrolled
-                ? "border-zinc-200 bg-white text-zinc-950 hover:border-[#ff4a22] hover:text-[#ff4a22]"
-                : "border-white/20 bg-white/10 text-white hover:bg-white/20"
-            }`}
-          >
-            <ShieldCheck className="w-3.5 h-3.5" />
-            Admin
-          </button>
-
           {/* Menu Trigger */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -153,17 +140,6 @@ export default function Header({ darkMode, setDarkMode, onAdminClick }: HeaderPr
                   >
                     Schedule Consultation ↳
                   </a>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      onAdminClick();
-                    }}
-                    className="inline-flex items-center gap-2 rounded-lg border border-zinc-200 px-4 py-3 text-[10px] font-black uppercase tracking-widest text-zinc-950 transition-colors hover:border-[#ff4a22] hover:text-[#ff4a22]"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5" />
-                    Admin
-                  </button>
                   <span className="text-xs font-mono text-zinc-400">GEN-D STUDIO ©2026</span>
                 </div>
               </div>

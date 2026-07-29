@@ -27,11 +27,22 @@ export default function App() {
     }
   }, [darkMode]);
 
+  // Check URL for admin route
+  useEffect(() => {
+    if (window.location.pathname === '/admin' || window.location.hash === '#admin') {
+      setShowAdminPanel(true);
+      // Clean up URL visually if they used hash
+      if (window.location.hash === '#admin') {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-[#050505] bg-grid-light dark:bg-grid text-zinc-900 dark:text-zinc-50 transition-colors duration-300 selection:bg-purple-500/20 antialiased font-sans">
       
       {/* Dynamic Header */}
-      <Header darkMode={darkMode} setDarkMode={setDarkMode} onAdminClick={() => setShowAdminPanel(true)} />
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
       
       {/* Main Content Layout */}
       <main>

@@ -1,5 +1,5 @@
-import React from "react";
 import { motion } from "motion/react";
+import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
   const handleScrollTo = (id: string) => {
@@ -10,95 +10,141 @@ export default function Hero() {
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
       const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth"
-      });
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
     }
   };
 
+  const services = [
+    "Website Dev",
+    "Digital Marketing",
+    "Social Media",
+    "Event Mgmt",
+    "Branding",
+    "SEO",
+  ];
+
   return (
-    <section id="home" className="relative min-h-[95vh] bg-[#009ee2] overflow-hidden flex flex-col justify-between pt-28 pb-12 transition-colors duration-300">
-      
-      {/* Background Graphic: Double exposure face with custom css filters & mask overlay to match reference exactly */}
-      <div className="absolute top-0 right-0 w-full lg:w-[60%] h-full pointer-events-none select-none z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#009ee2] via-transparent to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#009ee2] via-transparent to-transparent z-10" />
-        
-        {/* Artistic pink/purple gradient overlay acting as dual exposure */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-pink-600/40 via-purple-600/30 to-indigo-600/40 mix-blend-color-dodge z-10" />
-        
-        <img
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=1200"
-          alt="Artistic face representation"
-          referrerPolicy="no-referrer"
-          className="w-full h-full object-cover object-center scale-105 opacity-80 mix-blend-luminosity filter saturate-150 contrast-125"
-        />
-      </div>
+    <section
+      id="home"
+      className="relative min-h-screen bg-zinc-950 overflow-hidden flex flex-col pt-24"
+    >
+      {/* Decorative background circles */}
+      <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-white/5 pointer-events-none" />
+      <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-[#ff4a22]/10 pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-[#c3ff2e]/5 pointer-events-none" />
 
-      {/* Top Meta info row inside the blue canvas */}
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex flex-wrap justify-between items-start gap-4">
-        {/* Year indicator */}
-        <div className="text-sm font-black text-white/90 tracking-wider">
-          ©2026
-        </div>
-        
-        {/* Scope list on the right */}
-        <div className="text-right text-[10px] sm:text-xs font-black uppercase tracking-widest text-white/90 space-y-1">
-          <div>UI/UX Design</div>
-          <div>Development</div>
-          <div>Brand Identity Design</div>
-          <div>Ongoing Support</div>
+      {/* Top meta row */}
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex justify-between items-start">
+        <div className="text-xs font-black text-white/70 tracking-widest uppercase">©2026</div>
+        <div className="text-right text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-white/70 space-y-0.5 hidden sm:block">
+          <div>Event Management · Digital Marketing</div>
+          <div>Social Media · Website Development</div>
         </div>
       </div>
 
-      {/* Main Giant Typography Area */}
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 my-auto py-12">
-        <div className="flex flex-col space-y-2 select-none">
-          
-          {/* DIGITAL with serif font, italicized and styled like the image */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 50 }}
+      {/* Main hero content */}
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex-1 flex flex-col lg:flex-row items-center gap-12 py-16 lg:py-20">
+
+        {/* Left — Typography & CTA */}
+        <div className="flex-1 flex flex-col space-y-6 lg:space-y-8">
+
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif italic font-black text-[#c3ff2e] text-[16vw] sm:text-[14vw] lg:text-[13vw] leading-[0.8] tracking-tighter"
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center space-x-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 w-fit backdrop-blur-sm"
           >
-            Digital
-          </motion.h1>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ff4a22] animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-white/90">New Delhi, India · Est. 2022</span>
+          </motion.div>
 
-          {/* DESIGN STUDIO with thick sans, uppercase */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 50 }}
+          {/* Main headline */}
+          <div className="select-none">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif italic font-black text-white leading-none tracking-tighter"
+              style={{ fontSize: "clamp(4rem, 10vw, 9rem)" }}
+            >
+              Digital
+            </motion.h1>
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="font-syne font-black uppercase text-white leading-none tracking-tighter"
+              style={{ fontSize: "clamp(3rem, 8vw, 7.5rem)" }}
+            >
+              Generation
+            </motion.h1>
+          </div>
+
+          {/* Tagline */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="font-syne font-black uppercase text-white text-[12vw] sm:text-[10vw] lg:text-[9.5vw] leading-[0.85] tracking-tighter"
+            transition={{ duration: 0.7, delay: 0.35 }}
+            className="text-white/85 text-sm sm:text-base leading-relaxed font-medium max-w-md"
           >
-            Design Studio
-          </motion.h1>
+            We're a team of young digital-native professionals helping Indian businesses achieve their full potential online — from strategy to execution.
+          </motion.p>
 
-        </div>
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.45 }}
+            className="flex flex-wrap gap-3"
+          >
+            <button
+              onClick={() => handleScrollTo("#contact")}
+              className="flex items-center space-x-2 px-6 py-3.5 bg-[#ff4a22] hover:bg-[#e03a15] text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 shadow-lg cursor-pointer"
+            >
+              <span>Get a Free Consultation</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={() => handleScrollTo("#projects")}
+              className="flex items-center space-x-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 backdrop-blur-sm cursor-pointer"
+            >
+              <span>See Our Work</span>
+            </button>
+          </motion.div>
+
+          {/* Service pills */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+            className="flex flex-wrap gap-2 pt-2"
+          >
+            {services.map((s, i) => (
+              <span
+                key={i}
+                className="px-4 py-1.5 bg-white/10 border border-white/15 rounded-full text-[10px] font-black uppercase tracking-wider text-white/80 backdrop-blur-sm hover:bg-white/15 transition-colors"
+              >
+                {s}
+              </span>
+            ))}
+          </motion.div>
+      </div>
       </div>
 
-      {/* Bottom Subtitle / Info Area */}
-      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex flex-col md:flex-row justify-between items-end gap-6 pt-6">
-        
-        {/* Intro text */}
-        <p className="text-white/90 text-xs sm:text-sm max-w-md font-medium leading-normal">
-          We create digital designs that help brands move faster and convert better. Your business deserves more than just a website. It needs results.
+      {/* Bottom bar */}
+      <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex justify-between items-center pb-10">
+        <p className="text-white/60 text-[10px] font-bold uppercase tracking-widest hidden sm:block">
+          info@gendtechnologies.in · +91 99109 52431
         </p>
-
-        {/* Scroll arrow / action indicator */}
-        <button 
+        <button
           onClick={() => handleScrollTo("#services")}
-          className="w-12 h-12 rounded-full bg-zinc-950/25 hover:bg-zinc-950/50 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white cursor-pointer transition-all hover:scale-105 active:scale-95"
+          className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 flex items-center justify-center text-white cursor-pointer transition-all hover:scale-105 active:scale-95 ml-auto"
           aria-label="Scroll to services"
         >
-          <span className="text-lg font-bold">↓</span>
+          <span className="text-sm font-bold">↓</span>
         </button>
-
       </div>
-
     </section>
   );
 }

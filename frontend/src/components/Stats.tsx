@@ -19,10 +19,10 @@ export default function Stats() {
   };
 
   const items = [
-    { value: "17+", label: "Websites launched", desc: "Helping brands make their mark online." },
-    { value: "1.5M+", label: "Users reached", desc: "Our designs engage millions globally." },
-    { value: "98%", label: "Client satisfaction rate", desc: "We build long-term partnerships through proven results." },
-    { value: "10+", label: "Years of expertise", desc: "Decades of experience in delivering impactful digital solutions." }
+    { value: "20+", label: "Brands served", desc: "Helping Indian businesses establish a powerful digital presence." },
+    { value: "5L+", label: "People reached", desc: "Our campaigns and content connect brands with real audiences." },
+    { value: "98%", label: "Client satisfaction", desc: "We build long-term partnerships through consistent results." },
+    { value: "3+", label: "Years of expertise", desc: "A young, focused team with deep digital-native experience." }
   ];
 
   return (

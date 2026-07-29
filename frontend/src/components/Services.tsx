@@ -1,10 +1,19 @@
 import { useState } from "react";
-import { Laptop, TrendingUp, Sparkles, Calendar, CheckCircle2, ArrowUpRight } from "lucide-react";
+import { Laptop, TrendingUp, Sparkles, Calendar, Camera, Video, PenTool, Search, CheckCircle2, ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
-import { Service } from "../types";
 
 interface ServicesProps {
   onSelectService: (serviceName: string) => void;
+}
+
+interface Service {
+  id: string;
+  title: string;
+  description: string;
+  iconName: string;
+  features: string[];
+  metricValue: string;
+  metricLabel: string;
 }
 
 export default function Services({ onSelectService }: ServicesProps) {
@@ -13,16 +22,14 @@ export default function Services({ onSelectService }: ServicesProps) {
   const servicesList: Service[] = [
     {
       id: "web-dev",
-      title: "Web Development",
-      description: "We build ultra-fast, visually mesmerizing, and high-converting bespoke digital products engineered for seamless interactions across all screen sizes.",
+      title: "Website Development",
+      description: "We build ultra-fast, visually stunning, and high-converting websites engineered for the Indian market — from landing pages to full e-commerce platforms.",
       iconName: "laptop",
-      color: "from-[#ff4a22] to-[#e03d16]",
-      hoverBg: "hover:border-[#ff4a22]/30",
       features: [
-        "Headless CMS Integration",
-        "Interactive UI/UX Prototypes",
-        "SEO-Optimized Tech Architecture",
-        "E-Commerce & High-Conversion Funnels"
+        "Custom UI/UX Design",
+        "SEO-Optimised Architecture",
+        "E-Commerce & Payment Integration",
+        "Mobile-First Responsive Design"
       ],
       metricValue: "+42%",
       metricLabel: "Conversion Rate Increase"
@@ -30,50 +37,100 @@ export default function Services({ onSelectService }: ServicesProps) {
     {
       id: "digital-marketing",
       title: "Digital Marketing",
-      description: "Hyper-targeted content strategies, creative paid ad setups, and multi-channel SEO frameworks built specifically to maximize ROI and retain user focus.",
+      description: "Data-driven campaigns on Google, Meta, and beyond — crafted to maximise ROI for Indian brands targeting local and national audiences.",
       iconName: "marketing",
-      color: "from-[#ff4a22] to-[#e03d16]",
-      hoverBg: "hover:border-[#ff4a22]/30",
       features: [
-        "Meta, Google & TikTok Paid Campaigns",
-        "Viral Short-Form Content Creation",
-        "Predictive Audience Demographics",
-        "Comprehensive SEO Alignment"
+        "Google & Meta Paid Campaigns",
+        "Conversion Funnel Optimisation",
+        "Audience Targeting & Retargeting",
+        "Performance Analytics & Reporting"
       ],
       metricValue: "+180%",
-      metricLabel: "Organic CTR Amplification"
+      metricLabel: "Organic CTR Growth"
+    },
+    {
+      id: "social-media",
+      title: "Social Media Management",
+      description: "End-to-end social presence — from content calendars and community management to viral posts that grow your followers and brand engagement.",
+      iconName: "social",
+      features: [
+        "Content Calendar & Strategy",
+        "Instagram, LinkedIn & Facebook",
+        "Community Management",
+        "Growth Hacking & Analytics"
+      ],
+      metricValue: "3x",
+      metricLabel: "Avg. Follower Growth"
+    },
+    {
+      id: "events",
+      title: "Event Management",
+      description: "Brand launches, product reveals, influencer-led activations, and hybrid events — designed for maximum social buzz and real-world impact across India.",
+      iconName: "events",
+      features: [
+        "Brand Launch Events",
+        "Influencer Outreach & Management",
+        "On-Ground Logistics & Execution",
+        "Live Social Coverage & Amplification"
+      ],
+      metricValue: "94%",
+      metricLabel: "Audience Engagement Score"
     },
     {
       id: "branding",
       title: "Strategic Branding",
-      description: "We carve unique identity guidelines, visual languages, and premium digital asset kits that reflect your values and command market attention.",
+      description: "We craft unique brand identities — from logos and colour palettes to complete visual language systems that make your brand instantly recognisable.",
       iconName: "branding",
-      color: "from-[#ff4a22] to-[#e03d16]",
-      hoverBg: "hover:border-[#ff4a22]/30",
       features: [
-        "Vector Logo Systems & Typography Schemes",
-        "Brand Guidelines & Tone Formulas",
-        "Interactive Asset Design Kits",
-        "Market and Competitor Positioning Audits"
+        "Logo Design & Brand Guidelines",
+        "Colour, Typography & Visual Systems",
+        "Brand Tone & Messaging Strategy",
+        "Digital Asset Kits"
       ],
       metricValue: "3.5x",
       metricLabel: "Brand Recognition Uplift"
     },
     {
-      id: "events",
-      title: "Event Management",
-      description: "Experiential brand launches, creative hybrid activations, and influencer-led community integrations designed for peak digital visibility and social buzz.",
-      iconName: "events",
-      color: "from-[#ff4a22] to-[#e03d16]",
-      hoverBg: "hover:border-[#ff4a22]/30",
+      id: "seo",
+      title: "SEO Services",
+      description: "Rank higher on Google and drive consistent organic traffic with our proven on-page, off-page, and technical SEO strategies tailored for Indian businesses.",
+      iconName: "seo",
       features: [
-        "Experiential Popup Activations",
-        "Social-First Launch Strategy",
-        "Influencer Outreach & Integration",
-        "High-Fidelity Virtual Event Streams"
+        "On-Page & Technical SEO",
+        "Local SEO for Indian Markets",
+        "Keyword Research & Content Strategy",
+        "Monthly SEO Reports"
       ],
-      metricValue: "94%",
-      metricLabel: "Audience Engagement Score"
+      metricValue: "↑65%",
+      metricLabel: "Avg. Organic Traffic Gain"
+    },
+    {
+      id: "video",
+      title: "Video & Reels Production",
+      description: "High-quality short-form videos, Instagram Reels, YouTube content, and brand films — shot, edited, and optimised to stop the scroll and drive action.",
+      iconName: "video",
+      features: [
+        "Reels & Short-Form Videos",
+        "Brand Films & Ad Creatives",
+        "Professional Editing & Colour Grading",
+        "Platform-Optimised Formats"
+      ],
+      metricValue: "5x",
+      metricLabel: "Avg. Reel Reach vs. Static"
+    },
+    {
+      id: "photography",
+      title: "Graphic Design & Photography",
+      description: "Premium visual content — product photography, lifestyle shoots, social media creatives, and graphic design that elevates every touchpoint of your brand.",
+      iconName: "photography",
+      features: [
+        "Product & Lifestyle Photography",
+        "Social Media Creatives",
+        "Marketing Collateral Design",
+        "Brand Visual Consistency"
+      ],
+      metricValue: "2x",
+      metricLabel: "Engagement vs. Stock Photos"
     }
   ];
 
@@ -87,6 +144,14 @@ export default function Services({ onSelectService }: ServicesProps) {
         return <Sparkles className="w-5 h-5 text-[#ff4a22]" />;
       case "events":
         return <Calendar className="w-5 h-5 text-[#ff4a22]" />;
+      case "seo":
+        return <Search className="w-5 h-5 text-[#ff4a22]" />;
+      case "video":
+        return <Video className="w-5 h-5 text-[#ff4a22]" />;
+      case "photography":
+        return <Camera className="w-5 h-5 text-[#ff4a22]" />;
+      case "social":
+        return <PenTool className="w-5 h-5 text-[#ff4a22]" />;
       default:
         return <Laptop className="w-5 h-5 text-[#ff4a22]" />;
     }
@@ -120,11 +185,11 @@ export default function Services({ onSelectService }: ServicesProps) {
               ↳ CAPABILITIES
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-950 tracking-tighter uppercase font-syne leading-tight">
-              Growth Suite For Dominance.
+              Everything your brand needs to dominate digital.
             </h2>
           </div>
           <p className="text-zinc-500 max-w-md text-sm sm:text-base leading-relaxed font-medium">
-            We don't do generic services. Every channel we build is engineered specifically around driving verified customer conversion and establishing long-term branding equity.
+            From idea to execution — we handle every aspect of your digital presence so you can focus on running your business.
           </p>
         </div>
 
@@ -136,7 +201,7 @@ export default function Services({ onSelectService }: ServicesProps) {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, delay: (index % 4) * 0.1, ease: [0.16, 1, 0.3, 1] }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
               className="bg-white p-8 sm:p-10 rounded-2xl border border-zinc-200 transition-all duration-300 shadow-sm relative overflow-hidden group flex flex-col justify-between h-full hover:border-zinc-350 hover:shadow-md"
@@ -189,7 +254,7 @@ export default function Services({ onSelectService }: ServicesProps) {
                 className="pt-6 mt-6 border-t border-zinc-100 w-full flex items-center justify-between text-zinc-950 group-hover:text-[#ff4a22] transition-colors text-left font-black text-[10px] uppercase tracking-widest cursor-pointer"
                 id={`inquire-${service.id}`}
               >
-                <span>Inquire Now ↳</span>
+                <span>Get a Quote ↳</span>
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </button>
 
