@@ -23,10 +23,10 @@ export default function Header({ darkMode, setDarkMode }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
+  const navLinks: { name: string; href: string; isBadge?: boolean }[] = [
     { name: "About", href: "#about" },
     { name: "Projects", href: "#projects" },
-    { name: "Case Studies (17)", href: "#projects", isBadge: true },
+    { name: "Services", href: "#services" },
     { name: "Blog", href: "#blog" },
   ];
 

@@ -12,6 +12,7 @@ interface TeamMember {
   avatarInitials: string;
   avatarGradient: string;
   imageUrl: string;
+  objectPosition?: string;
 }
 
 export default function About() {
@@ -24,7 +25,8 @@ export default function About() {
       metricLabel: "Brands Elevated",
       avatarInitials: "VP",
       avatarGradient: "from-zinc-900 via-orange-500 to-[#ff4a22]",
-      imageUrl: vpImg
+      imageUrl: vpImg,
+      objectPosition: "object-top"
     },
     {
       name: "Deepanshu Pande",
@@ -34,7 +36,8 @@ export default function About() {
       metricLabel: "Years of Expertise",
       avatarInitials: "DP",
       avatarGradient: "from-zinc-950 via-[#ff4a22] to-amber-500",
-      imageUrl: dpImg
+      imageUrl: dpImg,
+      objectPosition: "object-[center_20%]"
     },
     {
       name: "Our Team",
@@ -161,7 +164,7 @@ export default function About() {
                       src={member.imageUrl}
                       alt={member.name}
                       referrerPolicy="no-referrer"
-                      className="absolute inset-0 w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
+                      className={`absolute inset-0 w-full h-full object-cover ${member.objectPosition || "object-center"} group-hover:scale-105 transition-transform duration-500 ease-out`}
                     />
                   </div>
 

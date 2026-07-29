@@ -77,8 +77,6 @@ async function startServer() {
     }
   };
 
-  app.use("/api", proxyApiRequest);
-
   // Initialize Gemini client lazily to avoid crashing if API key is missing
   let ai: GoogleGenAI | null = null;
   const getGeminiClient = (): GoogleGenAI => {
@@ -181,6 +179,9 @@ If asked about other things, politely steer them back to how GEND can elevate th
       });
     }
   });
+
+  // Catch-all API proxy for all other /api routes (must be defined AFTER specific /api routes)
+  app.use("/api", proxyApiRequest);
 
   // Vite integration middleware for dev environment, static routing for prod
   if (process.env.NODE_ENV !== "production") {

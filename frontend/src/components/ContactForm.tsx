@@ -210,28 +210,8 @@ export default function ContactForm({ prefilledService }: ContactFormProps) {
                 Let's bring your<br />vision to life.
               </h2>
               <p className="text-zinc-400 text-sm sm:text-base leading-relaxed font-medium">
-                John is here to ensure your experience with us is smooth and successful. Reach out anytime - he's here to make sure you feel confident and supported throughout your journey with us.
+                Our team is here to ensure your experience with us is smooth and successful. Reach out anytime - we're here to make sure you feel confident and supported throughout your journey with us.
               </p>
-            </div>
-
-            {/* Client Success Manager Profile Card */}
-            <div className="flex items-center space-x-4 pt-6 border-t border-zinc-800">
-              <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-[#ff4a22]/30 shrink-0">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
-                  alt="John Taylor"
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover object-center"
-                />
-              </div>
-              <div>
-                <h4 className="text-sm font-black uppercase tracking-wider text-white">
-                  John Taylor
-                </h4>
-                <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                  Client Success Manager
-                </p>
-              </div>
             </div>
           </div>
 
