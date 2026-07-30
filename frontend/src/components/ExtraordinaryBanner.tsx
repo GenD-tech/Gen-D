@@ -27,7 +27,7 @@ export default function ExtraordinaryBanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-zinc-950 font-syne uppercase leading-none z-20 translate-y-4 sm:translate-y-8 text-center"
+            className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-zinc-950 font-syne uppercase leading-none z-20 translate-y-4 sm:translate-y-8 text-center px-4"
           >
             From ordinary
           </motion.h2>
@@ -63,7 +63,7 @@ export default function ExtraordinaryBanner() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-zinc-950 font-syne uppercase leading-none z-20 -translate-y-4 sm:-translate-y-8 text-center"
+            className="text-2xl min-[400px]:text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-zinc-950 font-syne uppercase leading-none z-20 -translate-y-4 sm:-translate-y-8 text-center px-4"
           >
             to extraordinary
           </motion.h2>

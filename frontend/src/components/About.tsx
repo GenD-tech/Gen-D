@@ -105,9 +105,19 @@ export default function About() {
                 </blockquote>
 
                 <div className="flex items-center space-x-4 pt-4 border-t border-zinc-100">
-                  {/* Client avatar placeholder */}
-                  <div className="w-12 h-12 rounded-full bg-[#ff4a22] flex items-center justify-center font-black text-white text-sm shadow-md">
-                    KC
+                  {/* Client avatar */}
+                  <div className="w-14 h-14 rounded-full flex items-center justify-center bg-white shadow-md border border-zinc-100 overflow-hidden shrink-0">
+                    <img 
+                      src="/src/assets/kostume-logo.jpg" 
+                      alt="Kostume County Logo" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        // Fallback if image isn't named exactly as expected
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null; 
+                        target.src = "/src/assets/kostume-logo.png";
+                      }}
+                    />
                   </div>
                   <div>
                     <cite className="not-italic font-black uppercase text-zinc-950 block text-xs tracking-wide">Kostume County</cite>

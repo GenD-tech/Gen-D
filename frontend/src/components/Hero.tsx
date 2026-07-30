@@ -26,7 +26,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-zinc-950 overflow-hidden flex flex-col pt-24"
+      className="relative min-h-[100dvh] bg-zinc-950 overflow-hidden flex flex-col pt-24"
     >
       {/* Decorative background circles */}
       <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-white/5 pointer-events-none" />
@@ -46,7 +46,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-6 w-full relative z-10 flex-1 flex flex-col lg:flex-row items-center gap-12 py-16 lg:py-20">
 
         {/* Left — Typography & CTA */}
-        <div className="flex-1 flex flex-col space-y-6 lg:space-y-8">
+        <div className="flex-1 w-full flex flex-col items-center text-center lg:items-start lg:text-left space-y-6 lg:space-y-8">
 
           {/* Badge */}
           <motion.div
@@ -60,13 +60,13 @@ export default function Hero() {
           </motion.div>
 
           {/* Main headline */}
-          <div className="select-none">
+          <div className="select-none w-full">
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="font-serif italic font-black text-white leading-none tracking-tighter"
-              style={{ fontSize: "clamp(4rem, 10vw, 9rem)" }}
+              style={{ fontSize: "clamp(2rem, 11vw, 9rem)" }}
             >
               Digital
             </motion.h1>
@@ -75,7 +75,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="font-syne font-black uppercase text-white leading-none tracking-tighter"
-              style={{ fontSize: "clamp(3rem, 8vw, 7.5rem)" }}
+              style={{ fontSize: "clamp(1.5rem, 8vw, 7.5rem)" }}
             >
               Generation
             </motion.h1>
@@ -86,7 +86,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.35 }}
-            className="text-white/85 text-sm sm:text-base leading-relaxed font-medium max-w-md"
+            className="text-white/85 text-sm sm:text-base leading-relaxed font-medium max-w-md mx-auto lg:mx-0"
           >
             We're a team of young digital-native professionals helping Indian businesses achieve their full potential online — from strategy to execution.
           </motion.p>
@@ -96,18 +96,18 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.45 }}
-            className="flex flex-wrap gap-3"
+            className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 w-full sm:w-auto"
           >
             <button
               onClick={() => handleScrollTo("#contact")}
-              className="flex items-center space-x-2 px-6 py-3.5 bg-[#ff4a22] hover:bg-[#e03a15] text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 shadow-lg cursor-pointer"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3.5 bg-[#ff4a22] hover:bg-[#e03a15] text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 shadow-lg cursor-pointer"
             >
               <span>Get a Free Consultation</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={() => handleScrollTo("#projects")}
-              className="flex items-center space-x-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 backdrop-blur-sm cursor-pointer"
+              className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-3.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all duration-200 backdrop-blur-sm cursor-pointer"
             >
               <span>See Our Work</span>
             </button>
@@ -118,7 +118,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.6 }}
-            className="flex flex-wrap gap-2 pt-2"
+            className="flex flex-wrap justify-center lg:justify-start gap-2 pt-2"
           >
             {services.map((s, i) => (
               <span
